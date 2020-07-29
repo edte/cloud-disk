@@ -27,7 +27,7 @@ func InitRouter() {
 }
 
 func setupRouter(r *gin.Engine) {
-	r.Use(middleware.LoggerToFile())
+	r.Use(middleware.LoggerToFile(), middleware.Cors())
 
 	user := r.Group("/user")
 	{

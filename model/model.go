@@ -6,7 +6,9 @@ package model
 import (
 	"fmt"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"cloud-disk/config"
 	"cloud-disk/log"
@@ -16,9 +18,10 @@ var DB *gorm.DB
 
 func InitModel() {
 	log.Begin().Info("begin init database..")
+
 	db, err := gorm.Open(config.DatabaseConfig.Type,
 		fmt.Sprintf(
-			"%s:%s@(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local)",
+			"%s:%s@(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 			config.DatabaseConfig.User,
 			config.DatabaseConfig.Password,
 			config.DatabaseConfig.Host,
@@ -49,7 +52,7 @@ func addDefaultData() {
 	u := User{
 		Username: "root",
 		Password: "root",
-		Uid:      0,
+		Uid:      "0",
 		Role:     "root",
 	}
 	log.Begin().Info("begin add root user..")

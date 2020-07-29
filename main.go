@@ -4,12 +4,14 @@
 package main
 
 import (
+	"cloud-disk/config"
 	"cloud-disk/model"
 	"cloud-disk/router"
 	"cloud-disk/service"
 )
 
 func main() {
+	config.InitConfig()
 	model.InitModel()
 	service.InitService()
 	router.InitRouter()

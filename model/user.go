@@ -11,7 +11,7 @@ type User struct {
 	gorm.Model
 	Username string
 	Password string
-	Uid      int
+	Uid      string
 	Role     string
 }
 
@@ -27,6 +27,9 @@ func ListUsers() []User {
 	return nil
 }
 
-func GetPasswd() {
+func GetUserByUsername(username string) (User, error) {
+	var u User
 
+	err := DB.Where("username = ?", username).First(&u).Error
+	return u, err
 }
