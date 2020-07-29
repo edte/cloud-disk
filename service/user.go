@@ -22,8 +22,8 @@ var NowUser = nowUser{
 
 // LoginForm 用于登录表单
 type LoginForm struct {
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // IsUserExist 用于判断用户是否存在
