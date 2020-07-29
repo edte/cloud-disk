@@ -8,11 +8,15 @@ import (
 	"os"
 )
 
+// DefaultDiskPath 用来表示 file 的默认路径
+var DefaultDiskPath = "tmp/"
+
 type logFileConfig struct {
 	Path string
 	Name string
 }
 
+// LogFileConfig 用于存日志信息
 var LogFileConfig = logFileConfig{
 	Path: "",
 	Name: "log.txt",
@@ -27,6 +31,7 @@ type databaseConfig struct {
 	Port     int
 }
 
+// DatabaseConfig 用于数据库连接
 var DatabaseConfig = databaseConfig{
 	Name:     "cloud_disk",
 	Type:     "mysql",
@@ -34,11 +39,6 @@ var DatabaseConfig = databaseConfig{
 	Password: "mima",
 	Host:     "127.0.0.1",
 	Port:     3306,
-}
-
-type LoginForm struct {
-	Username string
-	Password string
 }
 
 type cookieConfig struct {
@@ -51,6 +51,7 @@ type cookieConfig struct {
 	HttpOnly bool
 }
 
+// CookieConfig 用于 cookie 配置
 var CookieConfig = cookieConfig{
 	Name:     "soidfjosd",
 	Value:    "",
@@ -79,15 +80,8 @@ func InitConfig() {
 	log.Println(err)
 }
 
-type nowUser struct {
-	Username string
-	Password string
-	Uid      string
-}
+// RouterHost 表示 router 的 host
+var RouterHost = "127.0.0.1:8080"
 
-// NowUser
-var NowUser = nowUser{
-}
-
-// DefaultDiskPath
-var DefaultDiskPath = "tmp/"
+// DefaultExpiredTime 表示 share 默认失效时间
+var DefaultExpiredTime = "1000h"

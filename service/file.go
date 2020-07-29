@@ -7,12 +7,12 @@ import (
 	"mime/multipart"
 	"os"
 
-	"cloud-disk/config"
 	"cloud-disk/log"
 	"cloud-disk/model"
 	"cloud-disk/model/disk"
 )
 
+// UploadFile 用于上传文件
 func UploadFile(files []*multipart.FileHeader) error {
 	if err := UploadFileToModel(files); err != nil {
 		log.Begin().Errorf("failed to upload file to database:%s", err)
@@ -26,11 +26,12 @@ func UploadFile(files []*multipart.FileHeader) error {
 	return nil
 }
 
+// UploadFileToModel 用于上传文件到 database
 func UploadFileToModel(files []*multipart.FileHeader) error {
 	for _, file := range files {
 		err := model.AddFile(model.File{
 			Name:        file.Filename,
-			Uid:         config.NowUser.Uid,
+			Uid:         NowUser.Uid,
 			Size:        file.Size,
 			Path:        "tmp",
 			Count:       0,
@@ -44,10 +45,12 @@ func UploadFileToModel(files []*multipart.FileHeader) error {
 	return nil
 }
 
+// UploadFileToDisk 上传文件到 disk
 func UploadFileToDisk(files []*multipart.FileHeader) error {
 	return disk.UploadFile(files)
 }
 
+// DeleteFile 删除文件
 func DeleteFile(name string, path string, isdir bool) error {
 	if err := DeleteFileToModel(name, path, isdir); err != nil {
 		log.Begin().Errorf("failed to delete file at model:%s", err)
@@ -60,6 +63,7 @@ func DeleteFile(name string, path string, isdir bool) error {
 	return nil
 }
 
+// DeleteFileToModel 从 database 删除文件
 func DeleteFileToModel(name string, path string, isdir bool) error {
 	return model.DelFile(model.File{
 		Name:        name,
@@ -68,10 +72,12 @@ func DeleteFileToModel(name string, path string, isdir bool) error {
 	})
 }
 
+// DeleteFileToDisk 从 disk 删除文件
 func DeleteFileToDisk(name string, path string, isdir bool) error {
 	return disk.DeleteFile(name, path, isdir)
 }
 
+// DownloadFile 下载文件
 func DownloadFile(path string, name string) (*os.File, error) {
 	if err := model.CountDecrement(name); err != nil {
 		return nil, err

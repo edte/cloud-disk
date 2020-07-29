@@ -45,11 +45,26 @@ func setTable() {
 	} else {
 		DB.CreateTable(&User{})
 	}
+
 	// file
 	if DB.HasTable(&File{}) {
 		DB.AutoMigrate(&File{})
 	} else {
 		DB.CreateTable(&File{})
+	}
+
+	// share
+	if DB.HasTable(&Share{}) {
+		DB.AutoMigrate(&Share{})
+	} else {
+		DB.CreateTable(&Share{})
+	}
+
+	// share file
+	if DB.HasTable(&ShareFiles{}) {
+		DB.AutoMigrate(&ShareFiles{})
+	} else {
+		DB.CreateTable(&ShareFiles{})
 	}
 
 	log.Begin().Info("init table successful")

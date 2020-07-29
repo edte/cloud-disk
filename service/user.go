@@ -6,11 +6,27 @@ package service
 import (
 	"github.com/gofrs/uuid"
 
-	"cloud-disk/config"
 	"cloud-disk/log"
 	"cloud-disk/model"
 )
 
+type nowUser struct {
+	Username string
+	Password string
+	Uid      string
+}
+
+// NowUser 用于备份当用户信息
+var NowUser = nowUser{
+}
+
+// LoginForm 用于登录表单
+type LoginForm struct {
+	Username string
+	Password string
+}
+
+// IsUserExist 用于判断用户是否存在
 func IsUserExist(username string) bool {
 	_, err := model.GetUserByUsername(username)
 	if err != nil {
@@ -20,7 +36,8 @@ func IsUserExist(username string) bool {
 	return true
 }
 
-func IsPasswdOk(l config.LoginForm) bool {
+// IsPasswdOk 用于判断密码是否正确
+func IsPasswdOk(l LoginForm) bool {
 	u, err := model.GetUserByUsername(l.Username)
 	if err != nil {
 		log.Begin().Error("get user by username failed:%v", err)
@@ -28,7 +45,8 @@ func IsPasswdOk(l config.LoginForm) bool {
 	return u.Password == l.Password
 }
 
-func AddUser(l config.LoginForm, uid string) error {
+// AddUser 用于增加用户
+func AddUser(l LoginForm, uid string) error {
 	err := model.AddUser(&model.User{
 		Username: l.Username,
 		Password: l.Password,
@@ -38,7 +56,8 @@ func AddUser(l config.LoginForm, uid string) error {
 	return err
 }
 
-func IsRegister(l config.LoginForm) bool {
+// IsRegister 用于判断是否注册
+func IsRegister(l LoginForm) bool {
 	u, err := model.GetUserByUsername(l.Username)
 	if err != nil {
 		log.Begin().Infof("Determine whether the registration:%s", err)
@@ -47,6 +66,7 @@ func IsRegister(l config.LoginForm) bool {
 	return u.Password == l.Password
 }
 
+// GetARandomUid 获取随机的 uid
 func GetARandomUid() string {
 	v4, err := uuid.NewV4()
 	if err != nil {
@@ -55,6 +75,7 @@ func GetARandomUid() string {
 	return v4.String()
 }
 
+// GetUid
 func GetUid(username string) string {
 	u, err := model.GetUserByUsername(username)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"cloud-disk/service/jwt"
 )
 
-// Login
+// Login 用于登录
 func Login(c *gin.Context) {
 	log.Begin().Infof("begin login...")
 
@@ -24,11 +24,11 @@ func Login(c *gin.Context) {
 			return
 		}
 		log.Begin().Info("token not correct")
-		response.Error(c, 1005, "token not correct")
+		response.Error(c, response.CodeTmp, "token not correct")
 		return
 	}
 
-	var l config.LoginForm
+	var l service.LoginForm
 
 	if err := c.ShouldBindJSON(&l); err != nil {
 		response.FormError(c)
@@ -36,13 +36,13 @@ func Login(c *gin.Context) {
 	}
 
 	if !service.IsUserExist(l.Username) {
-		response.Error(c, 1008, "user is not exist")
+		response.Error(c, response.CodeTmp, "user is not exist")
 		return
 	}
 
 	if !service.IsPasswdOk(l) {
 		log.Begin().Info("password not right")
-		response.Error(c, 1006, "password not right")
+		response.Error(c, response.CodeTmp, "password not right")
 		return
 	}
 
@@ -72,13 +72,14 @@ func hasToken(c *gin.Context) bool {
 	return err == nil
 }
 
+// HasLogin 用于判断是否注册
 func HasLogin(c *gin.Context) bool {
 	if !hasToken(c) {
 		return false
 	}
 	if !isTokenOk(c) {
 		log.Begin().Info("token not correct")
-		response.Error(c, 1005, "token not correct")
+		response.Error(c, response.CodeTmp, "token not correct")
 		return false
 	}
 	return true
@@ -88,14 +89,14 @@ func backUpUser(c *gin.Context) {
 	value, _ := c.Cookie(config.CookieConfig.Name)
 
 	user, _ := jwt.ParseToken(value)
-	config.NowUser.Username = user.Username
-	config.NowUser.Password = user.Password
-	config.NowUser.Uid = user.Uid
+	service.NowUser.Username = user.Username
+	service.NowUser.Password = user.Password
+	service.NowUser.Uid = user.Uid
 }
 
-// Register
+// Register 注册
 func Register(c *gin.Context) {
-	var l config.LoginForm
+	var l service.LoginForm
 
 	if err := c.ShouldBindJSON(&l); err != nil {
 		response.FormError(c)
@@ -103,7 +104,7 @@ func Register(c *gin.Context) {
 	}
 
 	if service.IsRegister(l) {
-		response.Error(c, 10003, "user is exist")
+		response.Error(c, response.CodeTmp, "user is exist")
 		return
 	}
 
@@ -124,13 +125,14 @@ func Register(c *gin.Context) {
 	// todo: 这里直接把 token 放 cookie 里了，避免测试时需要手动设置 auth 和设置获取 token 的 middleware
 	SetCookie(c)
 
-	config.NowUser.Username = l.Username
-	config.NowUser.Password = l.Password
-	config.NowUser.Uid = uid
+	service.NowUser.Username = l.Username
+	service.NowUser.Password = l.Password
+	service.NowUser.Uid = uid
 
 	response.OkWithData(c, "register successful!")
 }
 
+// SetCookie 设置 cookie
 func SetCookie(c *gin.Context) {
 	c.SetCookie(
 		config.CookieConfig.Name,

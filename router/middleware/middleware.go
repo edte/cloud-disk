@@ -124,7 +124,7 @@ func Cors() gin.HandlerFunc {
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !handlers.HasLogin(c) {
-			response.Error(c, 1009, "need login")
+			response.Error(c, response.CodeTmp, "need login")
 			c.Abort()
 			return
 		}

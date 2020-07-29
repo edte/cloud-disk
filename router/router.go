@@ -6,6 +6,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
+	"cloud-disk/config"
 	"cloud-disk/log"
 	"cloud-disk/router/handlers"
 	"cloud-disk/router/middleware"
@@ -18,7 +19,7 @@ func InitRouter() {
 
 	setupRouter(r)
 
-	err := r.Run()
+	err := r.Run(config.RouterHost)
 	if err != nil {
 		log.Begin().Fatalf("failed to init router")
 	}
@@ -46,7 +47,8 @@ func setupRouter(r *gin.Engine) {
 		{
 			publicFileRequired.DELETE("/delete", handlers.Delete)
 			publicFileRequired.GET("/download/:path/:name", handlers.Download)
-			publicFileRequired.GET("/share/:fid")
+			publicFileRequired.GET("/share", handlers.Share)
+			publicFileRequired.GET("/share/:key", handlers.HandleShare)
 		}
 	}
 }

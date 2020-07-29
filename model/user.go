@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// User 表示用户
 type User struct {
 	gorm.Model
 	Username string // username
@@ -15,18 +16,22 @@ type User struct {
 	Role     string // user role
 }
 
+// AddUser 增加用户
 func AddUser(u *User) error {
 	return DB.Create(&u).Error
 }
 
+// DelUser 删除用户
 func DelUser(u *User) error {
 	return DB.Delete(&u).Error
 }
 
+// ListUsers 列出所有用户
 func ListUsers() []User {
 	return nil
 }
 
+// GetUserByUsername 获取用户信息
 func GetUserByUsername(username string) (User, error) {
 	var u User
 

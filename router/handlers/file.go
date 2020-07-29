@@ -5,7 +5,6 @@ package handlers
 
 import (
 	"io"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 
@@ -14,25 +13,26 @@ import (
 	"cloud-disk/service"
 )
 
-// FileForm
+// FileForm 用于登录表单
 type FileForm struct {
 	Name  string
 	Isdir bool
 	Path  string
 }
 
+// DownloadForm 用于下载表单
 type DownloadForm struct {
 	Name string `uri:"name" binding:"required"`
 	Path string `uri:"path" binding:"required"`
 }
 
-// Upload
+// Upload 用于上传文件
 func Upload(c *gin.Context) {
 	log.Begin().Infof("upload file begin...")
 
 	// 设置最大支持上传的文件，这里表示 20 m，原因暂时看不懂
 	if c.Request.ParseMultipartForm(20<<20) != nil {
-		response.Error(c, http.StatusBadRequest, "too big files")
+		response.Error(c, response.CodeTmp, "too big files")
 		return
 	}
 
@@ -44,10 +44,10 @@ func Upload(c *gin.Context) {
 		log.Begin().Infof("upload file successful")
 		return
 	}
-	response.Error(c, 10011, "upload file failed")
+	response.Error(c, response.CodeTmp, "upload file failed")
 }
 
-// Delete
+// Delete 用于删除文件
 func Delete(c *gin.Context) {
 	log.Begin().Infof("delete file begin...")
 	var ff FileForm
@@ -65,7 +65,7 @@ func Delete(c *gin.Context) {
 	response.OkWithData(c, "delete file failed")
 }
 
-// Download
+// Download 用于下载文件
 func Download(c *gin.Context) {
 	log.Begin().Infof("download begin...")
 	var df DownloadForm
@@ -79,7 +79,7 @@ func Download(c *gin.Context) {
 
 	f, err := service.DownloadFile(df.Path, df.Name)
 	if err != nil {
-		response.Error(c, 10013, "download failed")
+		response.Error(c, response.CodeTmp, "download failed")
 		return
 	}
 
@@ -88,7 +88,7 @@ func Download(c *gin.Context) {
 
 	_, err = io.Copy(c.Writer, f)
 	if err != nil {
-		response.Error(c, 10013, "download failed")
+		response.Error(c, response.CodeTmp, "download failed")
 		log.Begin().Errorf("failed to download:%s", err)
 	}
 	log.Begin().Infof("download successful...")

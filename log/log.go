@@ -15,6 +15,7 @@ import (
 	"cloud-disk/config"
 )
 
+// Begin 设置了 log 的默认配置
 func Begin() *logrus.Logger {
 	logFilePath := config.LogFileConfig.Path
 	logFileName := config.LogFileConfig.Name
