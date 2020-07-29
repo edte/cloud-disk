@@ -4,6 +4,8 @@
 package log
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -25,7 +27,7 @@ func Begin() *logrus.Logger {
 	if err != nil {
 		log.Printf("failed to open log file: %v\n", err)
 	}
-
+	fmt.Println(err)
 	// 实例化
 	logger := logrus.New()
 
@@ -38,7 +40,8 @@ func Begin() *logrus.Logger {
 	// 设置方法名
 	logger.SetReportCaller(true)
 
-	logger.SetOutput(os.Stdout)
+	// 同时打印日志和存到文件中
+	logger.SetOutput(io.MultiWriter(os.Stdout, src))
 
 	// 设置日志格式
 	logger.SetFormatter(&logrus.JSONFormatter{

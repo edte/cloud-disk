@@ -9,10 +9,10 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string
-	Password string
-	Uid      string
-	Role     string
+	Username string // username
+	Password string // password
+	Uid      string // uid
+	Role     string // user role
 }
 
 func AddUser(u *User) error {
@@ -20,7 +20,7 @@ func AddUser(u *User) error {
 }
 
 func DelUser(u *User) error {
-	return nil
+	return DB.Delete(&u).Error
 }
 
 func ListUsers() []User {

@@ -39,11 +39,19 @@ func InitModel() {
 
 func setTable() {
 	log.Begin().Info("begin init table...")
+	// user
 	if DB.HasTable(&User{}) {
 		DB.AutoMigrate(&User{})
 	} else {
 		DB.CreateTable(&User{})
 	}
+	// file
+	if DB.HasTable(&File{}) {
+		DB.AutoMigrate(&File{})
+	} else {
+		DB.CreateTable(&File{})
+	}
+
 	log.Begin().Info("init table successful")
 }
 

@@ -7,19 +7,24 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"cloud-disk/config"
-	"cloud-disk/jwt"
 	"cloud-disk/log"
 	"cloud-disk/router/response"
 	"cloud-disk/service"
+	"cloud-disk/service/jwt"
 )
 
 // Login
 func Login(c *gin.Context) {
 	log.Begin().Infof("begin login...")
 
-	if hasLogin(c) {
-		backUpUser(c)
-		response.OkWithData(c, "you has login")
+	if hasToken(c) {
+		if isTokenOk(c) {
+			backUpUser(c)
+			response.OkWithData(c, "you has login")
+			return
+		}
+		log.Begin().Info("token not correct")
+		response.Error(c, 1005, "token not correct")
 		return
 	}
 
@@ -43,7 +48,7 @@ func Login(c *gin.Context) {
 
 	token, err := jwt.GenerateToken(l.Username, l.Password, service.GetUid(l.Username))
 	if err != nil {
-		log.Begin().Error("failed to generate token:%v", err)
+		log.Begin().Errorf("failed to generate token:%s", err)
 		return
 	}
 
@@ -67,11 +72,10 @@ func hasToken(c *gin.Context) bool {
 	return err == nil
 }
 
-func hasLogin(c *gin.Context) bool {
+func HasLogin(c *gin.Context) bool {
 	if !hasToken(c) {
 		return false
 	}
-
 	if !isTokenOk(c) {
 		log.Begin().Info("token not correct")
 		response.Error(c, 1005, "token not correct")
@@ -111,7 +115,7 @@ func Register(c *gin.Context) {
 
 	token, err := jwt.GenerateToken(l.Username, l.Password, uid)
 	if err != nil {
-		log.Begin().Error("failed to generate token:%v", err)
+		log.Begin().Errorf("failed to generate token:%s", err)
 		return
 	}
 

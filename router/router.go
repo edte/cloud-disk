@@ -27,19 +27,26 @@ func InitRouter() {
 }
 
 func setupRouter(r *gin.Engine) {
+	// log record，解决跨域
 	r.Use(middleware.LoggerToFile(), middleware.Cors())
 
+	// user
 	user := r.Group("/user")
 	{
 		user.POST("/login", handlers.Login)
 		user.POST("/register", handlers.Register)
 	}
 
-	file := r.Group("/file")
+	// file
+	file := r.Group("/file", middleware.AuthRequired())
 	{
-		file.POST("/upload")
-		file.DELETE("/delete")
-		file.GET("/download/:fid")
-		file.GET("/share/:fid")
+		file.POST("/upload", handlers.Upload)
+
+		publicFileRequired := file.Group("", middleware.PublicFile())
+		{
+			publicFileRequired.DELETE("/delete", handlers.Delete)
+			publicFileRequired.GET("/download/:path/:name", handlers.Download)
+			publicFileRequired.GET("/share/:fid")
+		}
 	}
 }

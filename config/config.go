@@ -61,13 +61,22 @@ var CookieConfig = cookieConfig{
 	HttpOnly: true,
 }
 
+// JwtSecret
 var JwtSecret = "osdjfowjeogjweoi"
 
+// InitConfig
 func InitConfig() {
 	_, err := os.Create(LogFileConfig.Path + LogFileConfig.Name)
 	if err != nil {
 		log.Fatalf("failed init log file")
 	}
+
+	err = os.Mkdir("tmp/", 0777)
+	if os.IsExist(err) {
+		os.Remove("tmp")
+		os.Mkdir("tmp/", 0777)
+	}
+	log.Println(err)
 }
 
 type nowUser struct {
@@ -76,5 +85,9 @@ type nowUser struct {
 	Uid      string
 }
 
+// NowUser
 var NowUser = nowUser{
 }
+
+// DefaultDiskPath
+var DefaultDiskPath = "tmp/"

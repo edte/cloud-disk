@@ -1,0 +1,13 @@
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:20","func":"cloud-disk/model.InitModel","level":"info","msg":"begin init database..","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:41","func":"cloud-disk/model.setTable","level":"info","msg":"begin init table...","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:55","func":"cloud-disk/model.setTable","level":"info","msg":"init table successful","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:59","func":"cloud-disk/model.addDefaultData","level":"info","msg":"begin set default table data...","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:66","func":"cloud-disk/model.addDefaultData","level":"info","msg":"begin add root user..","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:70","func":"cloud-disk/model.addDefaultData","level":"info","msg":"add root user successful","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:72","func":"cloud-disk/model.addDefaultData","level":"info","msg":"set default table data successful","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/model/model.go:37","func":"cloud-disk/model.InitModel","level":"info","msg":"init database successful","time":"2020-07-29 23:27:46"}
+{"file":"/home/edte/go/src/cloud-disk/router/router.go:15","func":"cloud-disk/router.InitRouter","level":"info","msg":"begin init router...","time":"2020-07-29 23:27:46"}
+{"level":"info","msg":"| 200 |      584.78µs |       127.0.0.1 | GET | /file/download/tmp/sofdi |","time":"2020-07-29 23:27:51"}
+{"level":"info","msg":"| 200 |     6.75894ms |       127.0.0.1 | GET | /file/download/tmp/ssr_d3d3Lmdvb.txt |","time":"2020-07-29 23:28:23"}
+{"level":"info","msg":"| 200 |   32.642181ms |       127.0.0.1 | GET | /file/download/tmp/ssr_d3d3Lmdvb.txt |","time":"2020-07-29 23:28:29"}
+{"level":"info","msg":"| 200 |     591.893µs |       127.0.0.1 | GET | /file/download/ofsdj/wg |","time":"2020-07-29 23:28:48"}

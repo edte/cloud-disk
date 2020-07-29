@@ -14,6 +14,8 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"cloud-disk/config"
+	"cloud-disk/router/handlers"
+	"cloud-disk/router/response"
 )
 
 // LoggerToFile 记录 router 日志到文件中
@@ -115,5 +117,23 @@ func Cors() gin.HandlerFunc {
 		}()
 
 		c.Next()
+	}
+}
+
+// AuthRequired to be used when needed login auth
+func AuthRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !handlers.HasLogin(c) {
+			response.Error(c, 1009, "need login")
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
+func PublicFile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
 	}
 }
