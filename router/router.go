@@ -6,7 +6,6 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
-	"cloud-disk/config"
 	"cloud-disk/log"
 	"cloud-disk/router/handlers"
 	"cloud-disk/router/middleware"
@@ -19,7 +18,7 @@ func InitRouter() {
 
 	setupRouter(r)
 
-	err := r.Run(config.RouterHost)
+	err := r.Run()
 	if err != nil {
 		log.Begin().Fatalf("failed to init router")
 	}
